@@ -13,6 +13,9 @@
     <header>
         <h1>Eloisa Lash</h1>
         <p>Sistema para Lash Designer</p>
+        <a href="logout.php" style="float: right;">
+            <button>Sair</button>
+        </a>
     </header>
 
     <main>

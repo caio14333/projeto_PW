@@ -2,26 +2,6 @@
 session_start();
 include '../conexao.php';
 
-$mensagem = "";
-$clientes = [];
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
-    $id = $_POST['id'];
-
-    $sql = "DELETE FROM clientes WHERE id = :id";
-    
-    try {
-        $stmt = $conect->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        
-        if ($stmt->execute()) {
-            $mensagem = "Cliente deletado com sucesso!";
-        }
-    } catch (PDOException $e) {
-        $mensagem = "Erro ao deletar: " . $e->getMessage();
-    }
-}
-
 $sql = "SELECT * FROM clientes";
 $stmt = $conect->query($sql);
 $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,15 +12,13 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deletar Cliente</title>
+    <title>Ver Clientes</title>
     <link rel="stylesheet" href="style.css">
     <style>
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
         th { background-color: #333; color: white; }
         tr:nth-child(even) { background-color: #f2f2f2; }
-        .delete-btn { background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer; }
-        .delete-btn:hover { background-color: darkred; }
     </style>
 </head>
 <body>
@@ -52,9 +30,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </header>
 
     <main>
-        <h2>Deletar Cliente</h2>
-
-        <?php if ($mensagem) echo "<p style='color: green;'>$mensagem</p>"; ?>
+        <h2>Lista de Clientes</h2>
 
         <?php if (count($clientes) > 0): ?>
             <table>
@@ -64,7 +40,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <th>Nome</th>
                         <th>Telefone</th>
                         <th>Instagram</th>
-                        <th>Ação</th>
+                        <th>Observações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,12 +50,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo $cliente['nome']; ?></td>
                             <td><?php echo $cliente['telefone']; ?></td>
                             <td><?php echo $cliente['instagram']; ?></td>
-                            <td>
-                                <form method="POST" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja deletar?');">
-                                    <input type="hidden" name="id" value="<?php echo $cliente['id']; ?>">
-                                    <button type="submit" class="delete-btn">Deletar</button>
-                                </form>
-                            </td>
+                            <td><?php echo $cliente['observacoes']; ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

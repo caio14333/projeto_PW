@@ -17,17 +17,19 @@
         <form action="processar_cadastro.php" method="POST">
 
             <label>Nome:</label>
-            <input type="text">
+            <input type="text" name="nome" required>
 
             <label>E-mail:</label>
-            <input type="email">
+            <input type="email" name="email" required>
 
             <label>Senha:</label>
-            <input type="password">
+            <input type="password" name="senha" required>
 
             <button type="submit">Cadastrar</button>
 
         </form>
+
+        <p><a href="logout.php">Voltar ao Login</a></p>
 
     </main>
 

@@ -1,3 +1,31 @@
+<?php
+session_start();
+
+$usuarios = [
+    "admin@email.com" => "123456"
+];
+
+$erro = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $email = $_POST["email"];
+    $senha = $_POST["senha"];
+
+    if (isset($usuarios[$email]) && $usuarios[$email] == $senha) {
+
+        $_SESSION["usuario"] = $email;
+
+        header("Location: dashboard.php");
+        exit();
+
+    } else {
+
+        $erro = "E-mail ou senha incorretos!";
+
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -36,8 +64,6 @@
         <a href="cadastro.php">
             <button>Cadastrar</button>
         </a>
-
-        <p><a href="logout.php">Login</a></p>
 
         <p style="color:red;">
             <?php echo $erro; ?>
