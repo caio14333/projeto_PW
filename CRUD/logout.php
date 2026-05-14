@@ -1,3 +1,31 @@
+<?php
+session_start();
+
+$usuarios = [
+    "admin@email.com" => "123456"
+];
+
+$erro = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $email = $_POST["email"];
+    $senha = $_POST["senha"];
+
+    if (isset($usuarios[$email]) && $usuarios[$email] == $senha) {
+
+        $_SESSION["usuario"] = $email;
+
+        header("Location: dashboard.php");
+        exit();
+
+    } else {
+
+        $erro = "E-mail ou senha incorretos!";
+
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -31,10 +59,8 @@
 
         <br>
 
-        <p>Não possui conta?</p>
-
         <a href="cadastro.php">
-            <button>Cadastrar</button>
+            <button>Cadastrar Conta</button>
         </a>
 
         <p style="color:red;">
