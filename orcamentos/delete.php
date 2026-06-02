@@ -1,11 +1,4 @@
 <?php
-/**
- * ========================================
- * ARQUIVO: orcamentos/delete.php
- * Descrição: Deletar orçamento existente
- * CRUD - DELETE (Deleção)
- * ========================================
- */
 
 // Iniciar sessão
 session_start();

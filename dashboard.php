@@ -1,11 +1,4 @@
 <?php
-/**
- * ========================================
- * ARQUIVO: dashboard.php
- * Descrição: Página inicial do sistema (Dashboard)
- * Exibe estatísticas dos CRUDs
- * ========================================
- */
 
 // Iniciar sessão
 session_start();

@@ -1,13 +1,5 @@
 <?php
-/**
- * ========================================
- * ARQUIVO: orcamentos/index.php
- * Descrição: Listar todos os orçamentos cadastrados
- * CRUD - READ (Leitura)
- * ========================================
- */
 
-// Iniciar sessão
 session_start();
 
 // Importar arquivo de conexão

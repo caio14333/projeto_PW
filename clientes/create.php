@@ -1,13 +1,5 @@
 <?php
-/**
- * ========================================
- * ARQUIVO: clientes/create.php
- * Descrição: Criar novo cliente
- * CRUD - CREATE (Criação)
- * ========================================
- */
 
-// Iniciar sessão
 session_start();
 
 // Importar arquivo de conexão

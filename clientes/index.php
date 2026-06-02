@@ -1,11 +1,4 @@
 <?php
-/**
- * ========================================
- * ARQUIVO: clientes/index.php
- * Descrição: Listar todos os clientes cadastrados
- * CRUD - READ (Leitura)
- * ========================================
- */
 
 // Iniciar sessão
 session_start();

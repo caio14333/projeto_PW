@@ -1,13 +1,5 @@
 <?php
-/**
- * ========================================
- * ARQUIVO: login.php
- * Descrição: Página de login do administrador
- * Valida email e senha usando password_verify
- * ========================================
- */
 
-// Iniciar sessão PHP
 session_start();
 
 // Importar arquivo de conexão
@@ -33,47 +25,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($email) || empty($senha)) {
         $erro = 'Por favor, preencha todos os campos!';
     } else {
-        // Preparar consulta SQL com prepared statement (segurança contra SQL Injection)
-        $sql = 'SELECT id, email, senha, nome FROM administrador WHERE email = ?';
-        $stmt = $conexao->prepare($sql);
+        // Credenciais fixas (sem banco de dados)
+        $admin_email = 'admin@lestedesign.com';
+        $admin_senha = 'admin123';
+        $admin_nome = 'Administrador';
 
-        if ($stmt) {
-            // Vincular o email como parâmetro
-            $stmt->bind_param('s', $email);
+        // Verificar credenciais
+        if ($email === $admin_email && $senha === $admin_senha) {
+            // Credenciais corretas! Criar sessão
+            $_SESSION['admin_id'] = 1;
+            $_SESSION['admin_email'] = $admin_email;
+            $_SESSION['admin_nome'] = $admin_nome;
 
-            // Executar a consulta
-            $stmt->execute();
-
-            // Obter resultado
-            $resultado = $stmt->get_result();
-
-            // Verificar se encontrou um administrador com esse email
-            if ($resultado->num_rows === 1) {
-                $admin = $resultado->fetch_assoc();
-
-                // Verificar senha com password_verify
-                if (password_verify($senha, $admin['senha'])) {
-                    // Senha correta! Criar sessão
-                    $_SESSION['admin_id'] = $admin['id'];
-                    $_SESSION['admin_email'] = $admin['email'];
-                    $_SESSION['admin_nome'] = $admin['nome'];
-
-                    // Redirecionar para dashboard
-                    header('Location: dashboard.php');
-                    exit();
-                } else {
-                    // Senha incorreta
-                    $erro = 'Email ou senha incorretos!';
-                }
-            } else {
-                // Email não encontrado
-                $erro = 'Email ou senha incorretos!';
-            }
-
-            // Fechar statement
-            $stmt->close();
+            // Redirecionar para dashboard
+            header('Location: dashboard.php');
+            exit();
         } else {
-            $erro = 'Erro ao processar login. Tente novamente!';
+            // Credenciais incorretas
+            $erro = 'Email ou senha incorretos!';
         }
     }
 }
@@ -145,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <hr style="margin: 30px 0; border: none; border-top: 1px solid #444;">
             <p style="font-size: 12px; text-align: center;">
                 <strong>Dados de Teste:</strong><br>
-                Email: admin@lestedesign.com<br>
+                Email: admin@lashdesign.com<br>
                 Senha: admin123
             </p>
         </div>

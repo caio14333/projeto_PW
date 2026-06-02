@@ -1,11 +1,5 @@
 <?php
-/**
- * ========================================
- * ARQUIVO: clientes/delete.php
- * Descrição: Deletar cliente existente
- * CRUD - DELETE (Deleção)
- * ========================================
- */
+
 
 // Iniciar sessão
 session_start();

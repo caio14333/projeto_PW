@@ -1,11 +1,5 @@
 <?php
-/**
- * ========================================
- * ARQUIVO: clientes/update.php
- * Descrição: Editar cliente existente
- * CRUD - UPDATE (Atualização)
- * ========================================
- */
+
 
 // Iniciar sessão
 session_start();
