@@ -1,28 +1,17 @@
 <?php
 
-session_start();
-
-// Importar arquivo de conexão
 require_once '../conexao.php';
 
-// Verificar se o admin está logado
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../login.php');
-    exit();
-}
-
-// Variáveis para controlar mensagens
 $erro = '';
 $sucesso = '';
 
-// Processar formulário quando POST é recebido
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Receber dados do formulário
+    
     $nome = isset($_POST['nome']) ? trim($_POST['nome']) : '';
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $telefone = isset($_POST['telefone']) ? trim($_POST['telefone']) : '';
 
-    // Validar campos
+    
     if (empty($nome)) {
         $erro = 'O nome do cliente é obrigatório!';
     } elseif (empty($email)) {
@@ -30,24 +19,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (empty($telefone)) {
         $erro = 'O telefone do cliente é obrigatório!';
     } else {
-        // Preparar consulta com prepared statement (segurança contra SQL Injection)
+        
         $sql = 'INSERT INTO clientes (nome, email, telefone) VALUES (?, ?, ?)';
         $stmt = $conexao->prepare($sql);
 
         if ($stmt) {
-            // Vincular parâmetros
+            
             $stmt->bind_param('sss', $nome, $email, $telefone);
 
-            // Executar inserção
+            
             if ($stmt->execute()) {
-                // Sucesso! Redirecionar para a lista
+                
                 header('Location: index.php?sucesso=Cliente criado com sucesso!');
                 exit();
             } else {
                 $erro = 'Erro ao criar cliente: ' . $stmt->error;
             }
 
-            // Fechar statement
+            
             $stmt->close();
         } else {
             $erro = 'Erro ao preparar consulta: ' . $conexao->error;
@@ -65,21 +54,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <!-- HEADER -->
+    
     <header>
         <div class="container">
             <a href="../dashboard.php" class="logo">◆ Leste Design</a>
             
             <div class="user-info">
-                <span>Bem-vindo, <strong><?php echo htmlspecialchars($_SESSION['admin_nome']); ?></strong></span>
-                <a href="../logout.php" class="logout-btn">Sair</a>
+                <span>Bem-vindo, <strong>Administrador</strong></span>
             </div>
         </div>
     </header>
 
-    <!-- LAYOUT PRINCIPAL -->
+    
     <div class="layout-dashboard">
-        <!-- SIDEBAR/MENU LATERAL -->
+        
         <aside class="sidebar">
             <ul>
                 <li><a href="../dashboard.php">📊 Dashboard</a></li>
@@ -89,23 +77,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
         </aside>
 
-        <!-- CONTEÚDO PRINCIPAL -->
+        
         <main>
-            <!-- Título -->
+            
             <h1>➕ Novo Cliente</h1>
             <p>Preencha os dados abaixo para criar um novo cliente.</p>
 
-            <!-- Exibir erro se houver -->
+            
             <?php if (!empty($erro)): ?>
                 <div class="alerta alerta-erro">
                     <?php echo htmlspecialchars($erro); ?>
                 </div>
             <?php endif; ?>
 
-            <!-- Formulário -->
+            
             <div class="card">
                 <form method="POST" action="">
-                    <!-- Campo: Nome -->
+                    
                     <div class="form-group">
                         <label for="nome">Nome do Cliente *</label>
                         <input 
@@ -118,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         >
                     </div>
 
-                    <!-- Campo: Email -->
+                    
                     <div class="form-group">
                         <label for="email">Email *</label>
                         <input 
@@ -131,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         >
                     </div>
 
-                    <!-- Campo: Telefone -->
+                    
                     <div class="form-group">
                         <label for="telefone">Telefone *</label>
                         <input 
@@ -144,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         >
                     </div>
 
-                    <!-- Botões de Ação -->
+                    
                     <div class="btn-group">
                         <button type="submit" class="btn btn-principal">
                             ✅ Salvar Cliente
@@ -159,3 +147,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 </html>
+
+

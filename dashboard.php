@@ -1,36 +1,22 @@
 <?php
 
-// Iniciar sessão
-session_start();
-
-// Importar arquivo de conexão
 require_once 'conexao.php';
 
-// Verificar se o admin está logado
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: login.php');
-    exit();
-}
-
-// Contar clientes
 $sql_clientes = 'SELECT COUNT(*) as total FROM clientes';
 $resultado_clientes = $conexao->query($sql_clientes);
 $dados_clientes = $resultado_clientes->fetch_assoc();
 $total_clientes = $dados_clientes['total'];
 
-// Contar serviços
 $sql_servicos = 'SELECT COUNT(*) as total FROM servicos';
 $resultado_servicos = $conexao->query($sql_servicos);
 $dados_servicos = $resultado_servicos->fetch_assoc();
 $total_servicos = $dados_servicos['total'];
 
-// Contar orçamentos
 $sql_orcamentos = 'SELECT COUNT(*) as total FROM orcamentos';
 $resultado_orcamentos = $conexao->query($sql_orcamentos);
 $dados_orcamentos = $resultado_orcamentos->fetch_assoc();
 $total_orcamentos = $dados_orcamentos['total'];
 
-// Calcular valor total dos orçamentos
 $sql_valor = 'SELECT SUM(valor) as total FROM orcamentos';
 $resultado_valor = $conexao->query($sql_valor);
 $dados_valor = $resultado_valor->fetch_assoc();
@@ -42,25 +28,24 @@ $valor_total = $dados_valor['total'] ?? 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Leste Design</title>
+    <title>Dashboard - Eloisa Design</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- HEADER -->
+    
     <header>
         <div class="container">
-            <a href="dashboard.php" class="logo">◆ Leste Design</a>
+            <a href="dashboard.php" class="logo">◆ Eloisa Design</a>
             
             <div class="user-info">
-                <span>Bem-vindo, <strong><?php echo htmlspecialchars($_SESSION['admin_nome']); ?></strong></span>
-                <a href="logout.php" class="logout-btn">Sair</a>
+                <span>Bem-vindo, <strong>Administrador</strong></span>
             </div>
         </div>
     </header>
 
-    <!-- LAYOUT PRINCIPAL -->
+    
     <div class="layout-dashboard">
-        <!-- SIDEBAR/MENU LATERAL -->
+        
         <aside class="sidebar">
             <ul>
                 <li><a href="dashboard.php" class="active">📊 Dashboard</a></li>
@@ -70,66 +55,66 @@ $valor_total = $dados_valor['total'] ?? 0;
             </ul>
         </aside>
 
-        <!-- CONTEÚDO PRINCIPAL -->
+        
         <main>
-            <!-- Título -->
+            
             <div class="dashboard-titulo">
                 <h1>Dashboard</h1>
-                <p>Bem-vindo ao sistema Leste Design. Aqui você pode gerenciar clientes, serviços e orçamentos.</p>
+                <p>Bem-vindo ao sistema Eloisa lash Design. Aqui você pode gerenciar clientes, serviços e orçamentos.</p>
             </div>
 
-            <!-- Cards de Estatísticas -->
+            
             <div class="dashboard-stats">
-                <!-- Card: Total de Clientes -->
+                
                 <div class="stat-card">
                     <div class="stat-numero"><?php echo $total_clientes; ?></div>
                     <div class="stat-label">Clientes Cadastrados</div>
                 </div>
 
-                <!-- Card: Total de Serviços -->
+                
                 <div class="stat-card">
                     <div class="stat-numero"><?php echo $total_servicos; ?></div>
                     <div class="stat-label">Serviços Disponíveis</div>
                 </div>
 
-                <!-- Card: Total de Orçamentos -->
+                
                 <div class="stat-card">
                     <div class="stat-numero"><?php echo $total_orcamentos; ?></div>
                     <div class="stat-label">Orçamentos</div>
                 </div>
 
-                <!-- Card: Valor Total -->
+                
                 <div class="stat-card">
                     <div class="stat-numero">R$ <?php echo number_format($valor_total, 2, ',', '.'); ?></div>
                     <div class="stat-label">Valor Total</div>
                 </div>
             </div>
 
-            <!-- Seção de Atalhos -->
+            
             <h2>Atalhos Rápidos</h2>
 
             <div class="grid-cards">
-                <!-- Card: Clientes -->
+                
                 <div class="card">
                     <div class="card-titulo">👥 Clientes</div>
                     <div class="card-conteudo">
-                        <p>Gerencie os clientes da sua empresa. Adicione, edite ou remova clientes.</p>
+                        <p>Clientes a serem gerenciados.</p>
                         <br>
                         <a href="clientes/index.php" class="btn btn-principal">Acessar</a>
                     </div>
                 </div>
 
-                <!-- Card: Serviços -->
+                
                 <div class="card">
                     <div class="card-titulo">🔧 Serviços</div>
                     <div class="card-conteudo">
-                        <p>Cadastre e administre todos os serviços oferecidos pela Leste Design.</p>
+                        <p>serviços ofercidos pela Eloisa lash Design.</p>
                         <br>
                         <a href="servicos/index.php" class="btn btn-principal">Acessar</a>
                     </div>
                 </div>
 
-                <!-- Card: Orçamentos -->
+                
                 <div class="card">
                     <div class="card-titulo">📋 Orçamentos</div>
                     <div class="card-conteudo">
@@ -140,7 +125,7 @@ $valor_total = $dados_valor['total'] ?? 0;
                 </div>
             </div>
 
-            <!-- Informações do Sistema -->
+            
             <div style="margin-top: 60px; padding-top: 20px; border-top: 1px solid #444;">
                 <h3>Sobre o Sistema</h3>
                 <p>Sistema de Gerenciamento Leste Design v1.0</p>
@@ -153,3 +138,5 @@ $valor_total = $dados_valor['total'] ?? 0;
     </div>
 </body>
 </html>
+
+

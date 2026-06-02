@@ -1,26 +1,16 @@
-/**
- * ========================================
- * ARQUIVO: style.css
- * Descrição: Estilos CSS para todo o projeto Leste Design
- * Cores: Roxo e Preto
- * ========================================
- */
 
-/* ========================================
-   VARIÁVEIS E ESTILOS GLOBAIS
-   ======================================== */
 
 :root {
-    --cor-principal: #7c3aed;     /* Roxo principal */
-    --cor-principal-escura: #6d28d9; /* Roxo escuro */
-    --cor-fundo: #000000;          /* Preto */
-    --cor-fundo-secundario: #1a1a1a; /* Cinza muito escuro */
-    --cor-fundo-claro: #2d2d2d;    /* Cinza escuro */
-    --cor-texto: #ffffff;          /* Branco */
-    --cor-texto-secundario: #b0b0b0; /* Cinza claro */
-    --cor-erro: #ef4444;           /* Vermelho */
-    --cor-sucesso: #10b981;        /* Verde */
-    --cor-aviso: #f59e0b;          /* Laranja */
+    --cor-principal: #7c3aed;     
+    --cor-principal-escura: #6d28d9; 
+    --cor-fundo: #000000;          
+    --cor-fundo-secundario: #1a1a1a; 
+    --cor-fundo-claro: #2d2d2d;    
+    --cor-texto: #ffffff;          
+    --cor-texto-secundario: #b0b0b0; 
+    --cor-erro: #ef4444;           
+    --cor-sucesso: #10b981;        
+    --cor-aviso: #f59e0b;          
     --borda-radius: 8px;
     --sombra: 0 4px 6px rgba(124, 58, 237, 0.2);
 }
@@ -43,10 +33,6 @@ body {
     line-height: 1.6;
 }
 
-/* ========================================
-   LAYOUT GERAL - FLEXBOX
-   ======================================== */
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -59,10 +45,6 @@ body {
     align-items: center;
     height: 100vh;
 }
-
-/* ========================================
-   HEADER/NAVEGAÇÃO
-   ======================================== */
 
 header {
     background-color: var(--cor-fundo-secundario);
@@ -144,10 +126,6 @@ header .container {
     background-color: #dc2626;
 }
 
-/* ========================================
-   SIDEBAR/MENU LATERAL
-   ======================================== */
-
 .layout-dashboard {
     display: flex;
     min-height: calc(100vh - 80px);
@@ -185,10 +163,6 @@ header .container {
     padding-left: 22px;
 }
 
-/* ========================================
-   CONTEÚDO PRINCIPAL
-   ======================================== */
-
 main {
     flex: 1;
     padding: 40px;
@@ -216,10 +190,6 @@ p {
     color: var(--cor-texto-secundario);
     margin-bottom: 15px;
 }
-
-/* ========================================
-   FORMULÁRIOS
-   ======================================== */
 
 .form-group {
     margin-bottom: 20px;
@@ -272,10 +242,6 @@ textarea {
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
-
-/* ========================================
-   BOTÕES
-   ======================================== */
 
 .btn {
     padding: 12px 30px;
@@ -349,10 +315,6 @@ textarea {
     flex-wrap: wrap;
 }
 
-/* ========================================
-   TABELAS
-   ======================================== */
-
 .tabela-container {
     overflow-x: auto;
     margin: 30px 0;
@@ -397,10 +359,6 @@ tbody tr:last-child td {
     gap: 8px;
 }
 
-/* ========================================
-   CARDS
-   ======================================== */
-
 .card {
     background-color: var(--cor-fundo-secundario);
     border: 1px solid var(--cor-fundo-claro);
@@ -434,10 +392,6 @@ tbody tr:last-child td {
     margin-bottom: 40px;
 }
 
-/* ========================================
-   ALERTAS E MENSAGENS
-   ======================================== */
-
 .alerta {
     padding: 15px 20px;
     border-radius: var(--borda-radius);
@@ -469,10 +423,6 @@ tbody tr:last-child td {
     border-left-color: var(--cor-principal);
 }
 
-/* ========================================
-   PÁGINA DE LOGIN
-   ======================================== */
-
 .login-container {
     background-color: var(--cor-fundo-secundario);
     padding: 50px;
@@ -501,10 +451,6 @@ tbody tr:last-child td {
     color: var(--cor-principal);
     margin-bottom: 20px;
 }
-
-/* ========================================
-   DASHBOARD
-   ======================================== */
 
 .dashboard-titulo {
     margin-bottom: 40px;
@@ -537,10 +483,6 @@ tbody tr:last-child td {
     opacity: 0.9;
 }
 
-/* ========================================
-   ACTIONS/AÇÕES
-   ======================================== */
-
 .acao-criar {
     margin-bottom: 30px;
 }
@@ -560,10 +502,6 @@ tbody tr:last-child td {
     margin-bottom: 30px;
 }
 
-/* ========================================
-   VALIDAÇÃO DE FORMULÁRIOS
-   ======================================== */
-
 .erro-campo {
     border-color: var(--cor-erro) !important;
 }
@@ -574,10 +512,6 @@ tbody tr:last-child td {
     margin-top: 5px;
 }
 
-/* ========================================
-   FOOTER
-   ======================================== */
-
 footer {
     background-color: var(--cor-fundo-secundario);
     padding: 20px 0;
@@ -586,10 +520,6 @@ footer {
     color: var(--cor-texto-secundario);
     margin-top: 40px;
 }
-
-/* ========================================
-   RESPONSIVIDADE
-   ======================================== */
 
 @media (max-width: 768px) {
     .layout-dashboard {
@@ -673,3 +603,4 @@ footer {
         width: 100%;
     }
 }
+

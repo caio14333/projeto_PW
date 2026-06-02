@@ -1,27 +1,21 @@
 <?php
 
-// Iniciar sessão
 session_start();
 
-// Importar arquivo de conexão
 require_once '../conexao.php';
 
-// Verificar se o admin está logado
 if (!isset($_SESSION['admin_id'])) {
     header('Location: ../login.php');
     exit();
 }
 
-// Buscar todos os clientes no banco de dados
 $sql = 'SELECT id, nome, email, telefone, data_criacao FROM clientes ORDER BY data_criacao DESC';
 $resultado = $conexao->query($sql);
 
-// Verificar se a consulta foi executada com sucesso
 if (!$resultado) {
     die('Erro ao buscar clientes: ' . $conexao->error);
 }
 
-// Contar quantos clientes existem
 $total_clientes = $resultado->num_rows;
 
 ?>
@@ -34,7 +28,7 @@ $total_clientes = $resultado->num_rows;
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <!-- HEADER -->
+    
     <header>
         <div class="container">
             <a href="../dashboard.php" class="logo">◆ Leste Design</a>
@@ -46,9 +40,9 @@ $total_clientes = $resultado->num_rows;
         </div>
     </header>
 
-    <!-- LAYOUT PRINCIPAL -->
+    
     <div class="layout-dashboard">
-        <!-- SIDEBAR/MENU LATERAL -->
+        
         <aside class="sidebar">
             <ul>
                 <li><a href="../dashboard.php">📊 Dashboard</a></li>
@@ -58,25 +52,25 @@ $total_clientes = $resultado->num_rows;
             </ul>
         </aside>
 
-        <!-- CONTEÚDO PRINCIPAL -->
+        
         <main>
-            <!-- Título -->
+            
             <h1>👥 Gerenciar Clientes</h1>
             <p>Aqui você pode visualizar, adicionar, editar e remover clientes.</p>
 
-            <!-- Botão para criar novo cliente -->
+            
             <div class="acao-criar">
                 <a href="create.php" class="btn btn-principal">
                     ➕ Novo Cliente
                 </a>
             </div>
 
-            <!-- Exibir conteúdo -->
+            
             <?php if ($total_clientes > 0): ?>
-                <!-- Há clientes cadastrados - Exibir tabela -->
+                
                 <div class="tabela-container">
                     <table>
-                        <!-- Cabeçalho da tabela -->
+                        
                         <thead>
                             <tr>
                                 <th>#ID</th>
@@ -88,7 +82,7 @@ $total_clientes = $resultado->num_rows;
                             </tr>
                         </thead>
 
-                        <!-- Corpo da tabela -->
+                        
                         <tbody>
                             <?php while ($cliente = $resultado->fetch_assoc()): ?>
                                 <tr>
@@ -99,12 +93,12 @@ $total_clientes = $resultado->num_rows;
                                     <td><?php echo date('d/m/Y H:i', strtotime($cliente['data_criacao'])); ?></td>
                                     <td>
                                         <div class="acoes">
-                                            <!-- Botão Editar -->
+                                            
                                             <a href="update.php?id=<?php echo $cliente['id']; ?>" class="btn btn-editar btn-pequeno">
                                                 ✏️ Editar
                                             </a>
 
-                                            <!-- Botão Deletar -->
+                                            
                                             <a href="delete.php?id=<?php echo $cliente['id']; ?>" class="btn btn-deletar btn-pequeno" onclick="return confirm('Tem certeza que deseja deletar este cliente?');">
                                                 🗑️ Deletar
                                             </a>
@@ -116,13 +110,13 @@ $total_clientes = $resultado->num_rows;
                     </table>
                 </div>
 
-                <!-- Total de clientes -->
+                
                 <p style="margin-top: 20px; color: #b0b0b0;">
                     <strong>Total de clientes:</strong> <?php echo $total_clientes; ?>
                 </p>
 
             <?php else: ?>
-                <!-- Nenhum cliente cadastrado -->
+                
                 <div class="lista-vazia">
                     <h3>Nenhum cliente cadastrado</h3>
                     <p>Comece criando o primeiro cliente clicando no botão acima.</p>
@@ -134,3 +128,5 @@ $total_clientes = $resultado->num_rows;
     </div>
 </body>
 </html>
+
+
