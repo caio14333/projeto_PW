@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erro = 'Por favor, preencha todos os campos!';
     } else {
         
-        $admin_email = 'admin@lestedesign.com';
+        $admin_email = 'admin@eloisalashdesign.com';
         $admin_senha = 'admin123';
         $admin_nome = 'Administrador';
 
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Leste Design</title>
+    <title>Login - Eloisa Lash Design</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             
-            <h1>Leste Design</h1>
+            <h1>Eloisa Lash Design</h1>
             <p>Sistema de Gerenciamento</p>
 
             
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         id="email" 
                         name="email" 
                         required
-                        placeholder="admin@lestedesign.com"
+                        placeholder="admin@eloisalashdesign.com"
                         value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
                     >
                 </div>
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <hr style="margin: 30px 0; border: none; border-top: 1px solid #444;">
             <p style="font-size: 12px; text-align: center;">
                 <strong>Dados de Teste:</strong><br>
-                Email: admin@lashdesign.com<br>
+                Email: admin@eloisalashdesign.com<br>
                 Senha: admin123
             </p>
         </div>

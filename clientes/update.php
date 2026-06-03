@@ -76,14 +76,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Cliente - Leste Design</title>
+    <title>Editar Cliente - Eloisa Lash Design</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     
     <header>
         <div class="container">
-            <a href="../dashboard.php" class="logo">◆ Leste Design</a>
+            <a href="../dashboard.php" class="logo">◆ Eloisa Lash Design</a>
             
             <div class="user-info">
                 <span>Bem-vindo, <strong>Administrador</strong></span>
