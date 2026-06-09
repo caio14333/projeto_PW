@@ -1,0 +1,48 @@
+services:
+  # Serviço do Banco de Dados MySQL
+  banco:
+    image: mysql:8.0
+    container_name: crud_mysql_pw
+    restart: always
+    environment:
+      MYSQL_DATABASE: lash_design
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3307:3306"
+    volumes:
+      - dados_mysql:/var/lib/mysql
+
+  # Serviço da Aplicação PHP
+  web:
+    build: .
+    container_name: crud_php_pw
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: banco
+      DB_NAME: lash_design
+      DB_USER: root
+      DB_PASS: ""
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - banco
+
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: crud_phpmyadmin_pw
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_ARBITRARY: "1"
+      PMA_HOST: banco
+      PMA_USER: root
+      PMA_PASSWORD: ""
+    depends_on:
+      - banco
+
+volumes:
+  dados_mysql:

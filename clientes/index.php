@@ -1,13 +1,6 @@
 <?php
 
-session_start();
-
 require_once '../conexao.php';
-
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../login.php');
-    exit();
-}
 
 $sql = 'SELECT id, nome, email, telefone, data_criacao FROM clientes ORDER BY data_criacao DESC';
 $resultado = $conexao->query($sql);
@@ -15,34 +8,31 @@ $resultado = $conexao->query($sql);
 if (!$resultado) {
     die('Erro ao buscar clientes: ' . $conexao->error);
 }
-
 $total_clientes = $resultado->num_rows;
 
+?>
+<?php
+    $pageTitle = 'Clientes - Eloísa Leste Design';
+    $basePath = '..';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes - Leste Design</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title><?php echo htmlspecialchars($pageTitle); ?></title>
+    <link rel="stylesheet" href="<?php echo $basePath; ?>/css/style.css">
 </head>
 <body>
-    
-    <header>
-        <div class="container">
-            <a href="../dashboard.php" class="logo">◆ Leste Design</a>
-            
-            <div class="user-info">
-                <span>Bem-vindo, <strong><?php echo htmlspecialchars($_SESSION['admin_nome']); ?></strong></span>
-                <a href="../logout.php" class="logout-btn">Sair</a>
-            </div>
+<header>
+    <div class="container">
+        <a href="<?php echo $basePath; ?>/dashboard.php" class="logo"><img src="<?php echo $basePath; ?>/logo.svg" alt="Eloisa lash Design" class="logo-img"></a>
+        <div class="user-info">
+            <span>Bem-vindo, <strong>Administrador</strong></span>
         </div>
-    </header>
-
-    
+    </div>
+</header>
     <div class="layout-dashboard">
-        
         <aside class="sidebar">
             <ul>
                 <li><a href="../dashboard.php">📊 Dashboard</a></li>
@@ -52,25 +42,18 @@ $total_clientes = $resultado->num_rows;
             </ul>
         </aside>
 
-        
         <main>
-            
             <h1>👥 Gerenciar Clientes</h1>
-            <p>Aqui você pode visualizar, adicionar, editar e remover clientes.</p>
-
-            
+            <p>clientes a espera de eloisa lash design.😊</p>
             <div class="acao-criar">
                 <a href="create.php" class="btn btn-principal">
                     ➕ Novo Cliente
                 </a>
             </div>
 
-            
             <?php if ($total_clientes > 0): ?>
-                
                 <div class="tabela-container">
                     <table>
-                        
                         <thead>
                             <tr>
                                 <th>#ID</th>
@@ -82,7 +65,6 @@ $total_clientes = $resultado->num_rows;
                             </tr>
                         </thead>
 
-                        
                         <tbody>
                             <?php while ($cliente = $resultado->fetch_assoc()): ?>
                                 <tr>
@@ -93,12 +75,9 @@ $total_clientes = $resultado->num_rows;
                                     <td><?php echo date('d/m/Y H:i', strtotime($cliente['data_criacao'])); ?></td>
                                     <td>
                                         <div class="acoes">
-                                            
                                             <a href="update.php?id=<?php echo $cliente['id']; ?>" class="btn btn-editar btn-pequeno">
                                                 ✏️ Editar
                                             </a>
-
-                                            
                                             <a href="delete.php?id=<?php echo $cliente['id']; ?>" class="btn btn-deletar btn-pequeno" onclick="return confirm('Tem certeza que deseja deletar este cliente?');">
                                                 🗑️ Deletar
                                             </a>
@@ -110,13 +89,11 @@ $total_clientes = $resultado->num_rows;
                     </table>
                 </div>
 
-                
                 <p style="margin-top: 20px; color: #b0b0b0;">
                     <strong>Total de clientes:</strong> <?php echo $total_clientes; ?>
                 </p>
 
             <?php else: ?>
-                
                 <div class="lista-vazia">
                     <h3>Nenhum cliente cadastrado</h3>
                     <p>Comece criando o primeiro cliente clicando no botão acima.</p>
@@ -126,7 +103,10 @@ $total_clientes = $resultado->num_rows;
             <?php endif; ?>
         </main>
     </div>
+<footer>
+    <div class="container">
+        <p style="font-size:12px;color:#888;">Desenvolvido por: Luis Caio - Infor 2</p>
+    </div>
+</footer>
 </body>
 </html>
-
-

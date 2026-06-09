@@ -5,12 +5,10 @@ require_once '../conexao.php';
 $erro = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
     $nome_servico = isset($_POST['nome_servico']) ? trim($_POST['nome_servico']) : '';
     $descricao = isset($_POST['descricao']) ? trim($_POST['descricao']) : '';
     $preco = isset($_POST['preco']) ? trim($_POST['preco']) : '';
 
-    
     if (empty($nome_servico)) {
         $erro = 'O nome do serviço é obrigatório!';
     } elseif (empty($descricao)) {
@@ -20,27 +18,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!is_numeric($preco) || $preco <= 0) {
         $erro = 'O preço deve ser um número válido e maior que zero!';
     } else {
-        
         $preco = str_replace(',', '.', $preco);
-
-        
         $sql = 'INSERT INTO servicos (nome_servico, descricao, preco) VALUES (?, ?, ?)';
         $stmt = $conexao->prepare($sql);
 
         if ($stmt) {
-            
             $stmt->bind_param('ssd', $nome_servico, $descricao, $preco);
 
-            
             if ($stmt->execute()) {
-                
                 header('Location: index.php?sucesso=Serviço criado com sucesso!');
                 exit();
             } else {
                 $erro = 'Erro ao criar serviço: ' . $stmt->error;
             }
 
-            
+
             $stmt->close();
         } else {
             $erro = 'Erro ao preparar consulta: ' . $conexao->error;
@@ -49,29 +41,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
+<?php
+    $pageTitle = 'Novo Serviço - Eloísa Leste Design';
+    $basePath = '..';
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Serviço - Leste Design</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title><?php echo htmlspecialchars($pageTitle); ?></title>
+    <link rel="stylesheet" href="<?php echo $basePath; ?>/css/style.css">
 </head>
 <body>
-    
-    <header>
-        <div class="container">
-            <a href="../dashboard.php" class="logo">◆ Leste Design</a>
-            
-            <div class="user-info">
-                <span>Bem-vindo, <strong>Administrador</strong></span>
-            </div>
+<header>
+    <div class="container">
+        <a href="<?php echo $basePath; ?>/dashboard.php" class="logo"><img src="<?php echo $basePath; ?>/logo.svg" alt="Eloisa lash Design" class="logo-img"></a>
+        <div class="user-info">
+            <span>Bem-vindo, <strong>Administrador</strong></span>
         </div>
-    </header>
-
-    
+    </div>
+</header>
     <div class="layout-dashboard">
-        
         <aside class="sidebar">
             <ul>
                 <li><a href="../dashboard.php">📊 Dashboard</a></li>
@@ -81,23 +72,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
         </aside>
 
-        
         <main>
-            
             <h1>➕ Novo Serviço</h1>
             <p>Preencha os dados abaixo para criar um novo serviço.</p>
 
-            
             <?php if (!empty($erro)): ?>
                 <div class="alerta alerta-erro">
                     <?php echo htmlspecialchars($erro); ?>
                 </div>
             <?php endif; ?>
 
-            
             <div class="card">
                 <form method="POST" action="">
-                    
                     <div class="form-group">
                         <label for="nome_servico">Nome do Serviço *</label>
                         <input 
@@ -105,23 +91,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             id="nome_servico" 
                             name="nome_servico" 
                             required
-                            placeholder="Ex: Design de Logo"
+                            placeholder="Ex: Brasileiro"
                             value="<?php echo isset($_POST['nome_servico']) ? htmlspecialchars($_POST['nome_servico']) : ''; ?>"
                         >
                     </div>
 
-                    
                     <div class="form-group">
                         <label for="descricao">Descrição *</label>
                         <textarea 
                             id="descricao" 
                             name="descricao" 
                             required
-                            placeholder="Descreva os detalhes do serviço"
+                            placeholder="Descreva como vai ser o cilios"
                         ><?php echo isset($_POST['descricao']) ? htmlspecialchars($_POST['descricao']) : ''; ?></textarea>
                     </div>
 
-                    
                     <div class="form-group">
                         <label for="preco">Preço (R$) *</label>
                         <input 
@@ -136,7 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         >
                     </div>
 
-                    
                     <div class="btn-group">
                         <button type="submit" class="btn btn-principal">
                             ✅ Salvar Serviço
@@ -149,7 +132,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </main>
     </div>
+<footer>
+    <div class="container">
+        <p style="font-size:12px;color:#888;">Desenvolvido por: Luis Caio - Infor 2</p>
+    </div>
+</footer>
 </body>
 </html>
-
-

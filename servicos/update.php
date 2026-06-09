@@ -1,5 +1,4 @@
 <?php
-
 require_once '../conexao.php';
 
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -15,6 +14,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $resultado = $stmt->get_result();
 
+// Verificar se serviço existe
 if ($resultado->num_rows === 0) {
     header('Location: index.php');
     exit();
@@ -24,14 +24,11 @@ $servico = $resultado->fetch_assoc();
 $stmt->close();
 
 $erro = '';
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
     $nome_servico = isset($_POST['nome_servico']) ? trim($_POST['nome_servico']) : '';
     $descricao = isset($_POST['descricao']) ? trim($_POST['descricao']) : '';
     $preco = isset($_POST['preco']) ? trim($_POST['preco']) : '';
 
-    
     if (empty($nome_servico)) {
         $erro = 'O nome do serviço é obrigatório!';
     } elseif (empty($descricao)) {
@@ -41,27 +38,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!is_numeric($preco) || $preco <= 0) {
         $erro = 'O preço deve ser um número válido e maior que zero!';
     } else {
-        
         $preco = str_replace(',', '.', $preco);
 
-        
         $sql = 'UPDATE servicos SET nome_servico = ?, descricao = ?, preco = ? WHERE id = ?';
         $stmt = $conexao->prepare($sql);
 
         if ($stmt) {
-            
             $stmt->bind_param('ssdi', $nome_servico, $descricao, $preco, $id);
 
-            
             if ($stmt->execute()) {
-                
                 header('Location: index.php?sucesso=Serviço atualizado com sucesso!');
                 exit();
             } else {
                 $erro = 'Erro ao atualizar serviço: ' . $stmt->error;
             }
 
-            
             $stmt->close();
         } else {
             $erro = 'Erro ao preparar consulta: ' . $conexao->error;
@@ -76,29 +67,28 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 ?>
+<?php
+    $pageTitle = 'Editar Serviço - Eloísa Leste Design';
+    $basePath = '..';
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Serviço - Leste Design</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title><?php echo htmlspecialchars($pageTitle); ?></title>
+    <link rel="stylesheet" href="<?php echo $basePath; ?>/css/style.css">
 </head>
 <body>
-    
-    <header>
-        <div class="container">
-            <a href="../dashboard.php" class="logo">◆ Leste Design</a>
-            
-            <div class="user-info">
-                <span>Bem-vindo, <strong>Administrador</strong></span>
-            </div>
+<header>
+    <div class="container">
+        <a href="<?php echo $basePath; ?>/dashboard.php" class="logo"><img src="<?php echo $basePath; ?>/logo.svg" alt="Eloisa lash Design" class="logo-img"></a>
+        <div class="user-info">
+            <span>Bem-vindo, <strong>Administrador</strong></span>
         </div>
-    </header>
-
-    
+    </div>
+</header>
     <div class="layout-dashboard">
-        
         <aside class="sidebar">
             <ul>
                 <li><a href="../dashboard.php">📊 Dashboard</a></li>
@@ -108,23 +98,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             </ul>
         </aside>
 
-        
         <main>
-            
             <h1>✏️ Editar Serviço</h1>
             <p>Atualize os dados do serviço abaixo.</p>
 
-            
             <?php if (!empty($erro)): ?>
                 <div class="alerta alerta-erro">
                     <?php echo htmlspecialchars($erro); ?>
                 </div>
             <?php endif; ?>
-
-            
             <div class="card">
                 <form method="POST" action="">
-                    
                     <div class="form-group">
                         <label for="nome_servico">Nome do Serviço *</label>
                         <input 
@@ -136,8 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                             value="<?php echo htmlspecialchars($_POST['nome_servico']); ?>"
                         >
                     </div>
-
-                    
                     <div class="form-group">
                         <label for="descricao">Descrição *</label>
                         <textarea 
@@ -147,8 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                             placeholder="Descreva os detalhes do serviço"
                         ><?php echo htmlspecialchars($_POST['descricao']); ?></textarea>
                     </div>
-
-                    
                     <div class="form-group">
                         <label for="preco">Preço (R$) *</label>
                         <input 
@@ -162,8 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                             value="<?php echo htmlspecialchars($_POST['preco']); ?>"
                         >
                     </div>
-
-                    
                     <div class="btn-group">
                         <button type="submit" class="btn btn-principal">
                             ✅ Salvar Alterações
@@ -176,7 +154,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             </div>
         </main>
     </div>
+<footer>
+    <div class="container">
+        <p style="font-size:12px;color:#888;">Desenvolvido por: Luis Caio - Infor 2</p>
+    </div>
+</footer>
 </body>
 </html>
-
-

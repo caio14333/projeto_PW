@@ -30,14 +30,14 @@ function obter_classe_status($status) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orçamentos - Leste Design</title>
+    <title>Orçamentos - Eloisa lash Design</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     
     <header>
         <div class="container">
-            <a href="../dashboard.php" class="logo">◆ Leste Design</a>
+            <a href="../dashboard.php" class="logo"><img src="../logo.svg" alt="Eloisa lash Design" class="logo-img"></a>
             
             <div class="user-info">
                 <span>Bem-vindo, <strong>Administrador</strong></span>

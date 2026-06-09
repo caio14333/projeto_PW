@@ -64,10 +64,19 @@ header .container {
     font-weight: bold;
     color: var(--cor-principal);
     text-decoration: none;
+    display: inline-block;
+}
+
+.logo-img {
+    height: 100px;
+    width: auto;
+    max-width: 400px;
+    object-fit: contain;
 }
 
 .logo:hover {
-    color: var(--cor-principal-escura);
+    opacity: 0.8;
+    transition: opacity 0.3s;
 }
 
 .menu-principal {
@@ -447,9 +456,14 @@ tbody tr:last-child td {
 
 .login-logo {
     text-align: center;
-    font-size: 48px;
-    color: var(--cor-principal);
     margin-bottom: 20px;
+}
+
+.logo-img-login {
+    height: 200px;
+    width: auto;
+    max-width: 500px;
+    object-fit: contain;
 }
 
 .dashboard-titulo {

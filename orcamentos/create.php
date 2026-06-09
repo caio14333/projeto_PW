@@ -11,13 +11,11 @@ $resultado_servicos = $conexao->query($sql_servicos);
 $erro = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
     $nome_cliente = isset($_POST['nome_cliente']) ? trim($_POST['nome_cliente']) : '';
     $servico = isset($_POST['servico']) ? trim($_POST['servico']) : '';
     $valor = isset($_POST['valor']) ? trim($_POST['valor']) : '';
     $status = isset($_POST['status']) ? trim($_POST['status']) : 'Pendente';
 
-    
     if (empty($nome_cliente)) {
         $erro = 'O nome do cliente é obrigatório!';
     } elseif (empty($servico)) {
@@ -27,27 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!is_numeric($valor) || $valor <= 0) {
         $erro = 'O valor deve ser um número válido e maior que zero!';
     } else {
-        
         $valor = str_replace(',', '.', $valor);
 
-        
         $sql = 'INSERT INTO orcamentos (nome_cliente, servico, valor, status) VALUES (?, ?, ?, ?)';
         $stmt = $conexao->prepare($sql);
 
         if ($stmt) {
-            
             $stmt->bind_param('ssds', $nome_cliente, $servico, $valor, $status);
 
-            
             if ($stmt->execute()) {
-                
                 header('Location: index.php?sucesso=Orçamento criado com sucesso!');
                 exit();
             } else {
                 $erro = 'Erro ao criar orçamento: ' . $stmt->error;
             }
-
-            
             $stmt->close();
         } else {
             $erro = 'Erro ao preparar consulta: ' . $conexao->error;
@@ -61,14 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Orçamento - Leste Design</title>
+    <title>Novo Orçamento - Eloisa lash Design</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    
     <header>
         <div class="container">
-            <a href="../dashboard.php" class="logo">◆ Leste Design</a>
+            <a href="../dashboard.php" class="logo"><img src="../logo.svg" alt="Eloisa lash Design" class="logo-img"></a>
             
             <div class="user-info">
                 <span>Bem-vindo, <strong>Administrador</strong></span>
@@ -76,9 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </header>
 
-    
     <div class="layout-dashboard">
-        
         <aside class="sidebar">
             <ul>
                 <li><a href="../dashboard.php">📊 Dashboard</a></li>
@@ -88,23 +76,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
         </aside>
 
-        
         <main>
-            
             <h1>➕ Novo Orçamento</h1>
             <p>Preencha os dados abaixo para criar um novo orçamento.</p>
 
-            
             <?php if (!empty($erro)): ?>
                 <div class="alerta alerta-erro">
                     <?php echo htmlspecialchars($erro); ?>
                 </div>
             <?php endif; ?>
 
-            
             <div class="card">
                 <form method="POST" action="">
-                    
                     <div class="form-group">
                         <label for="nome_cliente">Nome do Cliente *</label>
                         <select 
@@ -114,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         >
                             <option value="">-- Selecione um cliente --</option>
                             <?php 
-                            
                             $resultado_clientes = $conexao->query($sql_clientes);
                             while ($cliente = $resultado_clientes->fetch_assoc()): 
                             ?>
@@ -124,8 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php endwhile; ?>
                         </select>
                     </div>
-
-                    
                     <div class="form-group">
                         <label for="servico">Serviço *</label>
                         <select 
@@ -135,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         >
                             <option value="">-- Selecione um serviço --</option>
                             <?php 
-                            
                             $resultado_servicos = $conexao->query($sql_servicos);
                             while ($servico = $resultado_servicos->fetch_assoc()): 
                             ?>
@@ -146,7 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
 
-                    
                     <div class="form-group">
                         <label for="valor">Valor (R$) *</label>
                         <input 
@@ -161,7 +139,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         >
                     </div>
 
-                    
                     <div class="form-group">
                         <label for="status">Status *</label>
                         <select 
@@ -176,7 +153,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
 
-                    
                     <div class="btn-group">
                         <button type="submit" class="btn btn-principal">
                             ✅ Salvar Orçamento
@@ -191,5 +167,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 </html>
-
-

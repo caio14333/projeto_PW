@@ -28,14 +28,15 @@ $valor_total = $dados_valor['total'] ?? 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Eloisa Design</title>
+    <title>Dashboard - Eloisa lash Design</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  
     
     <header>
         <div class="container">
-            <a href="dashboard.php" class="logo">◆ Eloisa Design</a>
+            <a href="dashboard.php" class="logo"><img src="logo.svg" alt="Eloisa lash Design" class="logo-img"></a>
             
             <div class="user-info">
                 <span>Bem-vindo, <strong>Administrador</strong></span>
@@ -128,10 +129,9 @@ $valor_total = $dados_valor['total'] ?? 0;
             
             <div style="margin-top: 60px; padding-top: 20px; border-top: 1px solid #444;">
                 <h3>Sobre o Sistema</h3>
-                <p>Sistema de Gerenciamento Leste Design v1.0</p>
+                <p>Sistema de Gerenciamento Eloisa lash Design </p>
                 <p style="font-size: 12px; color: #888;">
-                    Desenvolvido com PHP puro, MySQL, HTML5 e CSS. 
-                    Projeto técnico escolar para fins educacionais.
+                    Desenvolvido por: Luis Caio - Infor 2
                 </p>
             </div>
         </main>
