@@ -1,5 +1,12 @@
 <?php
-require_once '../conexao.php';
+session_start();
+
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php");
+    exit();
+}
+
+require_once('../conexao.php');
 
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header('Location: index.php');
@@ -8,55 +15,38 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id = intval($_GET['id']);
 
-$sql = 'SELECT id, nome_servico, descricao, preco FROM servicos WHERE id = ?';
-$stmt = $conexao->prepare($sql);
-$stmt->bind_param('i', $id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-
-// Verificar se serviço existe
-if ($resultado->num_rows === 0) {
+try {
+    $stmt = $conn->prepare('SELECT id, nome_servico, descricao, preco FROM servicos WHERE id = :id');
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $servico = $stmt->fetch();
+} catch (PDOException $e) {
     header('Location: index.php');
     exit();
 }
 
-$servico = $resultado->fetch_assoc();
-$stmt->close();
+if (!$servico) {
+    header('Location: index.php');
+    exit();
+}
 
 $erro = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome_servico = isset($_POST['nome_servico']) ? trim($_POST['nome_servico']) : '';
-    $descricao = isset($_POST['descricao']) ? trim($_POST['descricao']) : '';
-    $preco = isset($_POST['preco']) ? trim($_POST['preco']) : '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome_servico'])) {
+    $nome_servico = $_POST['nome_servico'];
+    $descricao = $_POST['descricao'] ?? '';
+    $preco = isset($_POST['preco']) ? str_replace(',', '.', $_POST['preco']) : null;
 
-    if (empty($nome_servico)) {
-        $erro = 'O nome do serviço é obrigatório!';
-    } elseif (empty($descricao)) {
-        $erro = 'A descrição do serviço é obrigatória!';
-    } elseif (empty($preco)) {
-        $erro = 'O preço do serviço é obrigatório!';
-    } elseif (!is_numeric($preco) || $preco <= 0) {
-        $erro = 'O preço deve ser um número válido e maior que zero!';
-    } else {
-        $preco = str_replace(',', '.', $preco);
-
-        $sql = 'UPDATE servicos SET nome_servico = ?, descricao = ?, preco = ? WHERE id = ?';
-        $stmt = $conexao->prepare($sql);
-
-        if ($stmt) {
-            $stmt->bind_param('ssdi', $nome_servico, $descricao, $preco, $id);
-
-            if ($stmt->execute()) {
-                header('Location: index.php?sucesso=Serviço atualizado com sucesso!');
-                exit();
-            } else {
-                $erro = 'Erro ao atualizar serviço: ' . $stmt->error;
-            }
-
-            $stmt->close();
-        } else {
-            $erro = 'Erro ao preparar consulta: ' . $conexao->error;
-        }
+    try {
+        $stmt = $conn->prepare('UPDATE servicos SET nome_servico = :nome_servico, descricao = :descricao, preco = :preco WHERE id = :id');
+        $stmt->bindValue(':nome_servico', $nome_servico);
+        $stmt->bindValue(':descricao', $descricao);
+        $stmt->bindValue(':preco', $preco);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        header('Location: index.php');
+        exit();
+    } catch (PDOException $e) {
+        $erro = 'Erro ao atualizar serviço: ' . $e->getMessage();
     }
 }
 

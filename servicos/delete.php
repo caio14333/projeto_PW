@@ -1,33 +1,24 @@
 <?php
+session_start();
 
-
-require_once '../conexao.php';
-
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    header('Location: index.php');
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php");
     exit();
 }
 
-$id = intval($_GET['id']);
+require_once('../conexao.php');
 
-$sql = 'DELETE FROM servicos WHERE id = ?';
-$stmt = $conexao->prepare($sql);
-
-if ($stmt) {
-    $stmt->bind_param('i', $id);
-
-    if ($stmt->execute()) {
-        header('Location: index.php?sucesso=Serviço deletado com sucesso!');
+if(isset($_GET['id'])) {
+    try {
+        $stmt = $conn->prepare("DELETE FROM servicos WHERE id = :id");
+        $stmt->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
+        $stmt->execute();
+        header('Location: index.php');
         exit();
-    } else {
+    } catch (PDOException $e) {
         header('Location: index.php?erro=Erro ao deletar serviço');
         exit();
     }
-
-    $stmt->close();
-} else {
-    header('Location: index.php?erro=Erro ao processar deleção');
-    exit();
 }
 
 ?>

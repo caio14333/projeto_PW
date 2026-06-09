@@ -1,19 +1,25 @@
 <?php
+session_start();
 
-require_once '../conexao.php';
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php");
+    exit();
+}
+
+require_once('../conexao.php');
 
 $sql = 'SELECT id, nome, email, telefone, data_criacao FROM clientes ORDER BY data_criacao DESC';
-$resultado = $conexao->query($sql);
-
-if (!$resultado) {
-    die('Erro ao buscar clientes: ' . $conexao->error);
+try {
+    $stmt = $conn->query($sql);
+    $resultado = $stmt->fetchAll();
+} catch (PDOException $e) {
+    die('Erro ao buscar clientes: ' . $e->getMessage());
 }
-$total_clientes = $resultado->num_rows;
 
-?>
-<?php
-    $pageTitle = 'Clientes - Eloísa Leste Design';
-    $basePath = '..';
+$total_clientes = count($resultado);
+
+$pageTitle = 'Clientes - Eloísa Leste Design';
+$basePath = '..';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -46,9 +52,7 @@ $total_clientes = $resultado->num_rows;
             <h1>👥 Gerenciar Clientes</h1>
             <p>clientes a espera de eloisa lash design.😊</p>
             <div class="acao-criar">
-                <a href="create.php" class="btn btn-principal">
-                    ➕ Novo Cliente
-                </a>
+                <a href="create.php" class="btn btn-principal">➕ Novo Cliente</a>
             </div>
 
             <?php if ($total_clientes > 0): ?>
@@ -64,9 +68,8 @@ $total_clientes = $resultado->num_rows;
                                 <th>Ações</th>
                             </tr>
                         </thead>
-
                         <tbody>
-                            <?php while ($cliente = $resultado->fetch_assoc()): ?>
+                            <?php foreach ($resultado as $cliente): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($cliente['id']); ?></td>
                                     <td><?php echo htmlspecialchars($cliente['nome']); ?></td>
@@ -75,23 +78,17 @@ $total_clientes = $resultado->num_rows;
                                     <td><?php echo date('d/m/Y H:i', strtotime($cliente['data_criacao'])); ?></td>
                                     <td>
                                         <div class="acoes">
-                                            <a href="update.php?id=<?php echo $cliente['id']; ?>" class="btn btn-editar btn-pequeno">
-                                                ✏️ Editar
-                                            </a>
-                                            <a href="delete.php?id=<?php echo $cliente['id']; ?>" class="btn btn-deletar btn-pequeno" onclick="return confirm('Tem certeza que deseja deletar este cliente?');">
-                                                🗑️ Deletar
-                                            </a>
+                                            <a href="update.php?id=<?php echo $cliente['id']; ?>" class="btn btn-editar btn-pequeno">✏️ Editar</a>
+                                            <a href="delete.php?id=<?php echo $cliente['id']; ?>" class="btn btn-deletar btn-pequeno" onclick="return confirm('Tem certeza que deseja deletar este cliente?');">🗑️ Deletar</a>
                                         </div>
                                     </td>
                                 </tr>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
 
-                <p style="margin-top: 20px; color: #b0b0b0;">
-                    <strong>Total de clientes:</strong> <?php echo $total_clientes; ?>
-                </p>
+                <p style="margin-top: 20px; color: #b0b0b0;"> <strong>Total de clientes:</strong> <?php echo $total_clientes; ?></p>
 
             <?php else: ?>
                 <div class="lista-vazia">

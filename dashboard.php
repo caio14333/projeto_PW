@@ -1,26 +1,40 @@
 <?php
+session_start();
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php");
+    exit();
+}
 
 require_once 'conexao.php';
 
 $sql_clientes = 'SELECT COUNT(*) as total FROM clientes';
-$resultado_clientes = $conexao->query($sql_clientes);
-$dados_clientes = $resultado_clientes->fetch_assoc();
-$total_clientes = $dados_clientes['total'];
+try {
+    $total_clientes = (int) $conn->query($sql_clientes)->fetchColumn();
+} catch (PDOException $e) {
+    $total_clientes = 0;
+}
 
 $sql_servicos = 'SELECT COUNT(*) as total FROM servicos';
-$resultado_servicos = $conexao->query($sql_servicos);
-$dados_servicos = $resultado_servicos->fetch_assoc();
-$total_servicos = $dados_servicos['total'];
+try {
+    $total_servicos = (int) $conn->query($sql_servicos)->fetchColumn();
+} catch (PDOException $e) {
+    $total_servicos = 0;
+}
 
 $sql_orcamentos = 'SELECT COUNT(*) as total FROM orcamentos';
-$resultado_orcamentos = $conexao->query($sql_orcamentos);
-$dados_orcamentos = $resultado_orcamentos->fetch_assoc();
-$total_orcamentos = $dados_orcamentos['total'];
+try {
+    $total_orcamentos = (int) $conn->query($sql_orcamentos)->fetchColumn();
+} catch (PDOException $e) {
+    $total_orcamentos = 0;
+}
 
 $sql_valor = 'SELECT SUM(valor) as total FROM orcamentos';
-$resultado_valor = $conexao->query($sql_valor);
-$dados_valor = $resultado_valor->fetch_assoc();
-$valor_total = $dados_valor['total'] ?? 0;
+try {
+    $valor_total = $conn->query($sql_valor)->fetchColumn();
+    $valor_total = $valor_total !== null ? $valor_total : 0;
+} catch (PDOException $e) {
+    $valor_total = 0;
+}
 
 ?>
 <!DOCTYPE html>

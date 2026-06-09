@@ -1,42 +1,28 @@
 <?php
+session_start();
 
-require_once '../conexao.php';
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php");
+    exit();
+}
 
-$erro = '';
+require_once('../conexao.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome_servico = isset($_POST['nome_servico']) ? trim($_POST['nome_servico']) : '';
-    $descricao = isset($_POST['descricao']) ? trim($_POST['descricao']) : '';
-    $preco = isset($_POST['preco']) ? trim($_POST['preco']) : '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome_servico'])) {
+    $nome_servico = $_POST['nome_servico'];
+    $descricao = $_POST['descricao'] ?? '';
+    $preco = isset($_POST['preco']) ? str_replace(',', '.', $_POST['preco']) : null;
 
-    if (empty($nome_servico)) {
-        $erro = 'O nome do serviço é obrigatório!';
-    } elseif (empty($descricao)) {
-        $erro = 'A descrição do serviço é obrigatória!';
-    } elseif (empty($preco)) {
-        $erro = 'O preço do serviço é obrigatório!';
-    } elseif (!is_numeric($preco) || $preco <= 0) {
-        $erro = 'O preço deve ser um número válido e maior que zero!';
-    } else {
-        $preco = str_replace(',', '.', $preco);
-        $sql = 'INSERT INTO servicos (nome_servico, descricao, preco) VALUES (?, ?, ?)';
-        $stmt = $conexao->prepare($sql);
-
-        if ($stmt) {
-            $stmt->bind_param('ssd', $nome_servico, $descricao, $preco);
-
-            if ($stmt->execute()) {
-                header('Location: index.php?sucesso=Serviço criado com sucesso!');
-                exit();
-            } else {
-                $erro = 'Erro ao criar serviço: ' . $stmt->error;
-            }
-
-
-            $stmt->close();
-        } else {
-            $erro = 'Erro ao preparar consulta: ' . $conexao->error;
-        }
+    try {
+        $stmt = $conn->prepare("INSERT INTO servicos (nome_servico, descricao, preco) VALUES (:nome_servico, :descricao, :preco)");
+        $stmt->bindValue(':nome_servico', $nome_servico);
+        $stmt->bindValue(':descricao', $descricao);
+        $stmt->bindValue(':preco', $preco);
+        $stmt->execute();
+        header('Location: index.php');
+        exit();
+    } catch (PDOException $e) {
+        $erro = 'Erro ao criar serviço: ' . $e->getMessage();
     }
 }
 
