@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     id="email"
                     name="email"
                     required
-                    placeholder="admin@eloisalashdesign.com"
+                    placeholder="admin@example.com"
                     value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
                 >
             </div>
