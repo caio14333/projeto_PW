@@ -1,8 +1,9 @@
 <?php
 session_start();
 
+// AJUSTE: Adicionado o '../' para voltar à pasta principal e achar o login
 if (!isset($_SESSION['email'])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 

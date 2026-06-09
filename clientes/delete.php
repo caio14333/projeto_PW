@@ -1,45 +1,18 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['email'])) {
     header("Location: login.php");
     exit();
 }
 
-require_once '../conexao.php';
+require_once('../conexao.php');
 
-if (!isset($_GET['id']) || empty($_GET['id'])) {
+if(isset($_GET['id'])) {
+    $stmt = $conn->prepare("DELETE FROM clientes WHERE id = :id");
+    $stmt->bindValue(':id', $_GET['id']);
+    $stmt->execute();
     header('Location: index.php');
     exit();
 }
-
-$id = intval($_GET['id']);
-
-$sql = 'DELETE FROM clientes WHERE id = ?';
-$stmt = $conexao->prepare($sql);
-
-if ($stmt) {
-    
-    $stmt->bind_param('i', $id);
-
-    
-    if ($stmt->execute()) {
-        
-        header('Location: index.php?sucesso=Cliente deletado com sucesso!');
-        exit();
-    } else {
-        
-        header('Location: index.php?erro=Erro ao deletar cliente');
-        exit();
-    }
-
-    
-    $stmt->close();
-} else {
-    
-    header('Location: index.php?erro=Erro ao processar deleção');
-    exit();
-}
-
 ?>
-
-

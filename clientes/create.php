@@ -1,59 +1,24 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['email'])) {
     header("Location: login.php");
     exit();
 }
 
-require_once '../conexao.php';
+require_once('../conexao.php');
 
-$erro = '';
-$sucesso = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    $nome = isset($_POST['nome']) ? trim($_POST['nome']) : '';
-    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-    $telefone = isset($_POST['telefone']) ? trim($_POST['telefone']) : '';
-
-    
-    if (empty($nome)) {
-        $erro = 'O nome do cliente é obrigatório!';
-    } elseif (empty($email)) {
-        $erro = 'O email do cliente é obrigatório!';
-    } elseif (empty($telefone)) {
-        $erro = 'O telefone do cliente é obrigatório!';
-    } else {
-        
-        $sql = 'INSERT INTO clientes (nome, email, telefone) VALUES (?, ?, ?)';
-        $stmt = $conexao->prepare($sql);
-
-        if ($stmt) {
-            
-            $stmt->bind_param('sss', $nome, $email, $telefone);
-
-            
-            if ($stmt->execute()) {
-                
-                header('Location: index.php?sucesso=Cliente criado com sucesso!');
-                exit();
-            } else {
-                $erro = 'Erro ao criar cliente: ' . $stmt->error;
-            }
-
-            
-            $stmt->close();
-        } else {
-            $erro = 'Erro ao preparar consulta: ' . $conexao->error;
-        }
-    }
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nome'])) {
+    $stmt = $conn->prepare("INSERT INTO clientes (nome, email, telefone) VALUES (:nome, :email, :telefone)");
+    $stmt->bindValue(':nome', $_POST['nome']);
+    $stmt->bindValue(':email', $_POST['email']);
+    $stmt->bindValue(':telefone', $_POST['telefone']);
+    $stmt->execute();
+    header('Location: index.php');
+    exit();
 }
+?>
 
-?>
-<?php
-    $pageTitle = 'Novo Cliente - Eloísa Leste Design';
-    $basePath = '..';
-?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -149,5 +114,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </footer>
 </body>
 </html>
-
-

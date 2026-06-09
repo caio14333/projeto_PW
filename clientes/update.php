@@ -1,109 +1,45 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['email'])) {
     header("Location: login.php");
     exit();
 }
 
-require_once '../conexao.php';
+require_once('../conexao.php');
 
-if (!isset($_GET['id']) || empty($_GET['id'])) {
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nome'])) {
+    $stmt = $conn->prepare("UPDATE clientes SET nome = :nome, email = :email, telefone = :telefone WHERE id = :id");
+    $stmt->bindValue(':nome', $_POST['nome']);
+    $stmt->bindValue(':email', $_POST['email']);
+    $stmt->bindValue(':telefone', $_POST['telefone']);
+    $stmt->bindValue(':id', $_POST['id']);
+    $stmt->execute();
     header('Location: index.php');
     exit();
 }
-
-$id = intval($_GET['id']);
-
-$sql = 'SELECT id, nome, email, telefone FROM clientes WHERE id = ?';
-$stmt = $conexao->prepare($sql);
-$stmt->bind_param('i', $id);
-$stmt->execute();
-$resultado = $stmt->get_result();
-
-if ($resultado->num_rows === 0) {
-    header('Location: index.php');
-    exit();
-}
-
-$cliente = $resultado->fetch_assoc();
-$stmt->close();
-
-$erro = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = isset($_POST['nome']) ? trim($_POST['nome']) : '';
-    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-    $telefone = isset($_POST['telefone']) ? trim($_POST['telefone']) : '';
-
-    if (empty($nome)) {
-        $erro = 'O nome do cliente é obrigatório!';
-    } elseif (empty($email)) {
-        $erro = 'O email do cliente é obrigatório!';
-    } elseif (empty($telefone)) {
-        $erro = 'O telefone do cliente é obrigatório!';
-    } else {
-        $sql = 'UPDATE clientes SET nome = ?, email = ?, telefone = ? WHERE id = ?';
-        $stmt = $conexao->prepare($sql);
-
-        if ($stmt) {
-            $stmt->bind_param('sssi', $nome, $email, $telefone, $id);
-
-            if ($stmt->execute()) {
-                header('Location: index.php?sucesso=Cliente atualizado com sucesso!');
-                exit();
-            } else {
-                $erro = 'Erro ao atualizar cliente: ' . $stmt->error;
-            }
-
-            $stmt->close();
-        } else {
-            $erro = 'Erro ao preparar consulta: ' . $conexao->error;
-        }
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    $_POST['nome'] = $cliente['nome'];
-    $_POST['email'] = $cliente['email'];
-    $_POST['telefone'] = $cliente['telefone'];
-}
-
 ?>
-<?php
-    $pageTitle = 'Editar Cliente - Eloísa Leste Design';
-    $basePath = '..';
-?>
+    
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title><?php echo htmlspecialchars($pageTitle); ?></title>
-    <link rel="stylesheet" href="<?php echo $basePath; ?>/css/style.css">
-</head>
-<body>
-<header>
-    <div class="container">
-        <a href="<?php echo $basePath; ?>/dashboard.php" class="logo"><img src="<?php echo $basePath; ?>/logo.svg" alt="Eloisa lash Design" class="logo-img"></a>
-        <div class="user-info">
-            <span>Bem-vindo, <strong>Administrador</strong></span>
-=======
     <title>Editar Cliente - Eloisa Lash Design</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    
     <header>
         <div class="container">
-            <a href="../dashboard.php" class="logo">◆ Eloisa Lash Design</a>
-            
+            <a href="../dashboard.php" class="logo">
+                <img src="../logo.svg" alt="Eloisa lash Design" class="logo-img">
+            </a>
             <div class="user-info">
                 <span>Bem-vindo, <strong>Administrador</strong></span>
             </div>
->>>>>>> 767c5212c80f2d7ca2965d7441a2e645527a06c4
         </div>
-    </div>
-</header>
+    </header>
+
     <div class="layout-dashboard">
         <aside class="sidebar">
             <ul>
@@ -134,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                             name="nome" 
                             required
                             placeholder="Digite o nome completo"
-                            value="<?php echo htmlspecialchars($_POST['nome']); ?>"
+                            value="<?php echo isset($_POST['nome']) ? htmlspecialchars($_POST['nome']) : ''; ?>"
                         >
                     </div>
 
@@ -146,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                             name="email" 
                             required
                             placeholder="cliente@email.com"
-                            value="<?php echo htmlspecialchars($_POST['email']); ?>"
+                            value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
                         >
                     </div>
 
@@ -158,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                             name="telefone" 
                             required
                             placeholder="(11) 98765-4321"
-                            value="<?php echo htmlspecialchars($_POST['telefone']); ?>"
+                            value="<?php echo isset($_POST['telefone']) ? htmlspecialchars($_POST['telefone']) : ''; ?>"
                         >
                     </div>
 
@@ -174,13 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             </div>
         </main>
     </div>
-    </div>
-<footer>
-    <div class="container">
-        <p style="font-size:12px;color:#888;">Desenvolvido por: Luis Caio - Infor 2</p>
-    </div>
-</footer>
+
+    <footer>
+        <div class="container">
+            <p style="font-size:12px;color:#888;">Desenvolvido por: Luis Caio - Infor 2</p>
+        </div>
+    </footer>
 </body>
 </html>
+
 
 

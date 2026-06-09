@@ -2,7 +2,8 @@
 session_start();
 require_once 'conexao.php';
 
-if (isset($_SESSION['admin_id'])) {
+// Se já estiver logado, manda direto para o dashboard
+if (isset($_SESSION['email'])) {
     header('Location: dashboard.php');
     exit();
 }
@@ -19,33 +20,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // LOGIN FIXO DE TESTE
         if ($email === 'admin@eloisalashdesign.com' && $senha === 'admin123') {
-            $_SESSION['admin_id'] = 0;
-            $_SESSION['admin_email'] = $email;
-            $_SESSION['admin_nome'] = 'Administrador';
-
+            $_SESSION['email'] = $email;
             header('Location: dashboard.php');
             exit();
         }
 
-        // LOGIN PELO BANCO DE DADOS
+        // LOGIN PELO BANCO DE DADOS (Padrão PDO)
         $sql = 'SELECT id, email, senha, nome FROM administrador WHERE email = :email';
-        try {
-            $stmt = $conn->prepare($sql);
+        $stmt = $conn->prepare($sql);
+        
+        if ($stmt) {
             $stmt->bindValue(':email', $email);
             $stmt->execute();
-            $admin = $stmt->fetch();
+            
+            $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($admin && password_verify($senha, $admin['senha'])) {
-                $_SESSION['admin_id'] = $admin['id'];
-                $_SESSION['admin_email'] = $admin['email'];
-                $_SESSION['admin_nome'] = $admin['nome'];
+                // Sessão padronizada para funcionar com o CRUD
+                $_SESSION['email'] = $admin['email'];
 
                 header('Location: dashboard.php');
                 exit();
             } else {
                 $erro = 'Email ou senha incorretos!';
             }
-        } catch (PDOException $e) {
+        } else {
             $erro = 'Erro ao processar login. Tente novamente!';
         }
     }

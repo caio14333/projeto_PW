@@ -1,13 +1,15 @@
 <?php
 session_start();
 
+// AJUSTE: Corrigido o caminho para voltar à raiz do projeto
 if (!isset($_SESSION['email'])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 
 require_once('../conexao.php');
 
+// Verifica se o ID foi passado na URL
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header('Location: index.php');
     exit();
@@ -15,11 +17,12 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id = intval($_GET['id']);
 
+// Busca os dados atuais para preencher o formulário
 try {
     $stmt = $conn->prepare('SELECT id, nome_servico, descricao, preco FROM servicos WHERE id = :id');
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
-    $servico = $stmt->fetch();
+    $servico = $stmt->fetch(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     header('Location: index.php');
     exit();
@@ -31,9 +34,10 @@ if (!$servico) {
 }
 
 $erro = '';
+// Processa o formulário de atualização
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome_servico'])) {
-    $nome_servico = $_POST['nome_servico'];
-    $descricao = $_POST['descricao'] ?? '';
+    $nome_servico = trim($_POST['nome_servico']);
+    $descricao = trim($_POST['descricao'] ?? '');
     $preco = isset($_POST['preco']) ? str_replace(',', '.', $_POST['preco']) : null;
 
     try {
@@ -43,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome_servico'])) {
         $stmt->bindValue(':preco', $preco);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
+        
         header('Location: index.php');
         exit();
     } catch (PDOException $e) {
@@ -50,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome_servico'])) {
     }
 }
 
+// Preenche o formulário se for o primeiro acesso (GET)
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $_POST['nome_servico'] = $servico['nome_servico'];
     $_POST['descricao'] = $servico['descricao'];
@@ -106,7 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                             id="nome_servico" 
                             name="nome_servico" 
                             required
-                            placeholder="Ex: Design de Logo"
                             value="<?php echo htmlspecialchars($_POST['nome_servico']); ?>"
                         >
                     </div>
@@ -116,7 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                             id="descricao" 
                             name="descricao" 
                             required
-                            placeholder="Descreva os detalhes do serviço"
                         ><?php echo htmlspecialchars($_POST['descricao']); ?></textarea>
                     </div>
                     <div class="form-group">
@@ -126,7 +130,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                             id="preco" 
                             name="preco" 
                             required
-                            placeholder="0,00"
                             step="0.01"
                             min="0"
                             value="<?php echo htmlspecialchars($_POST['preco']); ?>"
