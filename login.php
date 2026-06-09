@@ -21,8 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($email) || empty($senha)) {
         $erro = 'Por favor, preencha todos os campos!';
     } else {
+<<<<<<< HEAD
         $sql = 'SELECT id, email, senha, nome FROM administrador WHERE email = ?';
         $stmt = $conexao->prepare($sql);
+=======
+        
+        $admin_email = 'admin@eloisalashdesign.com';
+        $admin_senha = 'admin123';
+        $admin_nome = 'Administrador';
+>>>>>>> 767c5212c80f2d7ca2965d7441a2e645527a06c4
 
         if ($stmt) {
             $stmt->bind_param('s', $email);
@@ -70,7 +77,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Login - Eloisa lash Design</title>
+=======
+    <title>Login - Eloisa Lash Design</title>
+>>>>>>> 767c5212c80f2d7ca2965d7441a2e645527a06c4
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -80,7 +91,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="login-logo">
                 <img src="logo.svg" alt="Eloisa lash Design" class="logo-img-login">
             </div>
+<<<<<<< HEAD
             <h1>Eloisa lash Design</h1>
+=======
+
+            
+            <h1>Eloisa Lash Design</h1>
+>>>>>>> 767c5212c80f2d7ca2965d7441a2e645527a06c4
             <p>Sistema de Gerenciamento</p>
 
             <?php if (!empty($erro)): ?>
@@ -97,7 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         id="email" 
                         name="email" 
                         required
+<<<<<<< HEAD
                         placeholder="admin@eloisalash.com"
+=======
+                        placeholder="admin@eloisalashdesign.com"
+>>>>>>> 767c5212c80f2d7ca2965d7441a2e645527a06c4
                         value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
                     >
                 </div>
@@ -119,8 +140,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
 
             <hr style="margin: 30px 0; border: none; border-top: 1px solid #444;">
+<<<<<<< HEAD
             <p style="font-size: 14px; text-align: center;">
                 Faça o login de administrador para acessar o sistema.
+=======
+            <p style="font-size: 12px; text-align: center;">
+                <strong>Dados de Teste:</strong><br>
+                Email: admin@eloisalashdesign.com<br>
+                Senha: admin123
+>>>>>>> 767c5212c80f2d7ca2965d7441a2e645527a06c4
             </p>
         </div>
     </div>

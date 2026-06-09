@@ -71,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title><?php echo htmlspecialchars($pageTitle); ?></title>
     <link rel="stylesheet" href="<?php echo $basePath; ?>/css/style.css">
 </head>
@@ -80,6 +81,20 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         <a href="<?php echo $basePath; ?>/dashboard.php" class="logo"><img src="<?php echo $basePath; ?>/logo.svg" alt="Eloisa lash Design" class="logo-img"></a>
         <div class="user-info">
             <span>Bem-vindo, <strong>Administrador</strong></span>
+=======
+    <title>Editar Cliente - Eloisa Lash Design</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    
+    <header>
+        <div class="container">
+            <a href="../dashboard.php" class="logo">◆ Eloisa Lash Design</a>
+            
+            <div class="user-info">
+                <span>Bem-vindo, <strong>Administrador</strong></span>
+            </div>
+>>>>>>> 767c5212c80f2d7ca2965d7441a2e645527a06c4
         </div>
     </div>
 </header>
